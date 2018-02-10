@@ -1,0 +1,53 @@
+#!/usr/bin/env node
+
+const download = require('../lib/download')
+const program = require('commander')
+const chalk = require('chalk')
+const inquirer = require('inquirer')
+const ora = require('ora')
+
+program
+  .usage('<template-name> [project-name]')
+
+program.on('--help', () => {
+  console.log()
+  console.log('  Examples:')
+  console.log(chalk.gray('    # create a new project with an desktop template'))
+  console.log('    $ dumii init desktop my-project')
+  console.log()
+})
+
+function help () {
+  program.parse(process.argv)
+  if (program.args.length < 1) return program.help()
+}
+help()
+
+let template = program.args[0]
+const rawName = program.args[1]
+
+
+inquirer.prompt([{
+  type: 'confirm',
+  message: `拉取模板 ${chalk.yellow(template)}  到本地目录 ${chalk.yellow(rawName)}？`,
+  name: 'ok'
+}]).then(answers => {
+  if (answers.ok) {
+    run()
+  }
+})
+
+
+const run = () => {
+  const spinner = ora('正在拉取项目文件...')
+  spinner.start()
+
+  download(`dumii-templates/${template}`, rawName, err => {
+    if (err) {
+      spinner.fail('拉取文件失败！')
+      console.log(err)
+    } else {
+      spinner.succeed('拉取文件成功！')
+    }
+  })
+}
