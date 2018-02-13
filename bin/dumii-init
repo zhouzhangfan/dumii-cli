@@ -11,8 +11,8 @@ program
 
 program.on('--help', () => {
   console.log()
-  console.log('  Examples:')
-  console.log(chalk.gray('    # create a new project with an desktop template'))
+  console.log('  示例:')
+  console.log(chalk.gray('    # 使用 desktop 模板创建项目 my-project'))
   console.log('    $ dumii init desktop my-project')
   console.log()
 })

@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+
+const program = require('commander')
+const chalk = require('chalk')
+
+program
+  .usage('<type> [name]')
+
+program.on('--help', () => {
+  console.log()
+  console.log('  示例:')
+  console.log(chalk.gray('    # 在当前目录下新建一个 rbac 模块'))
+  console.log('    $ dumii new module rbac')
+  console.log()
+})
+
+function help () {
+  program.parse(process.argv)
+  if (program.args.length < 1) return program.help()
+}
+help()

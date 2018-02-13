@@ -3,5 +3,6 @@
 require('commander')
   .version(require('../package').version)
   .usage('<command> [options]')
-  .command('init', 'generate a new project from a template')
+  .command('init', '利用模板初始化项目')
+  .command('new', '创建新模块')
   .parse(process.argv)
