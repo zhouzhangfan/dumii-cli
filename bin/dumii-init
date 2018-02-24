@@ -29,7 +29,7 @@ const rawName = program.args[1]
 
 inquirer.prompt([{
   type: 'confirm',
-  message: `拉取模板 ${chalk.yellow(template)}  创建本地项目 ${chalk.yellow(rawName)}？`,
+  message: `拉取模板 ${chalk.yellow(template)} 创建本地项目 ${chalk.yellow(rawName)}？`,
   name: 'ok'
 }]).then(answers => {
   if (answers.ok) {
