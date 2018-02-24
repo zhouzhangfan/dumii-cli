@@ -1,4 +1,5 @@
 ### dumii-cli
+Dumii Command Line Interface
 dumii前端命令行工具
 
 #### 用法
@@ -7,4 +8,5 @@ $ dumii init <template-name> <project-name>
 ```
 
 template见项目：
-[dumii-templates](https://github.com/dumii-templates)
+[dumii-templates](https://gitee.com/organizations/dumii-templates)
+
