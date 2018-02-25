@@ -16,6 +16,6 @@ $ npm install -g dumii-cli
 $ dumii init <template-name> <project-name>
 ```
 
-template见项目：
+#### template目录
 [dumii-templates](https://gitee.com/organizations/dumii-templates)
 
