@@ -27,6 +27,7 @@
     "download": "^6.2.5",
     "git-clone": "^0.1.0",
     "inquirer": "^5.1.0",
+    "jsonfile": "^4.0.0",
     "ora": "^1.4.0",
     "rimraf": "^2.6.2"
   },

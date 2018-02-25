@@ -5,6 +5,9 @@ const program = require('commander')
 const chalk = require('chalk')
 const inquirer = require('inquirer')
 const ora = require('ora')
+const fs = require('fs')
+const jsonfile = require('jsonfile')
+const exec = require('child_process').exec
 
 program
   .usage('<template-name> [project-name]')
@@ -27,18 +30,49 @@ let template = program.args[0]
 const rawName = program.args[1]
 
 
-inquirer.prompt([{
-  type: 'confirm',
-  message: `拉取模板 ${chalk.yellow(template)} 创建本地项目 ${chalk.yellow(rawName)}？`,
-  name: 'ok'
-}]).then(answers => {
+inquirer.prompt([
+  {
+    type: 'confirm',
+    message: `拉取模板 ${chalk.yellow(template)} 创建本地项目 ${chalk.yellow(rawName)}？`,
+    name: 'ok'
+  },
+]).then(answers => {
   if (answers.ok) {
-    run()
+    inquirer.prompt([
+      {
+        type: 'input',
+        message: `网站标题：`,
+        name: 'title',
+        default: rawName
+      },
+      {
+        type: 'checkbox',
+        message: `预置模块：`,
+        name: 'modules',
+        choices: [
+          { value: 'users', name: '用户管理' },
+          { value: 'system', name: '系统管理' },
+        ]
+      },
+    ]).then(answers => {
+      let opt = {
+        title: answers.title,
+        modules: answers.modules
+      }
+      run(opt)
+    })
   }
 })
 
+const run = (opt) => {
+  fetch(() => {
+    config(opt, () => {
+      complete()
+    })
+  })
+}
 
-const run = () => {
+const fetch = (callback) => {
   const spinner = ora('正在拉取项目文件...')
   spinner.start()
 
@@ -48,6 +82,35 @@ const run = () => {
       console.log(err)
     } else {
       spinner.succeed('拉取文件成功！')
+      callback()
+    }
+  })
+  // setTimeout(() => {
+  //   spinner.succeed('拉取文件成功！')
+  //   callback()
+  // }, 2000)
+}
+
+const config = (opt, callback) => {
+  const spinner = ora('正在生成配置文件...')
+  spinner.start()
+  jsonfile.writeFile(`${rawName}/src/config/index.json`, opt, { spaces: 2 }, (err) => {
+    if (err) {
+      spinner.fail('生成配置文件失败！')
+      console.log(err)
+    } else {
+      spinner.succeed('生成配置文件成功！')
+      callback()
     }
   })
 }
+
+const complete = () => {
+  console.log(`${chalk.yellow('  运行以下命令进行开发：')}`)
+  console.log(`${chalk.cyanBright('  $  cd ')}` + chalk.cyanBright(rawName))
+  console.log(`${chalk.cyanBright('  $  npm install')}`)
+  console.log(`${chalk.cyanBright('  $  npm run dev')}`)
+}
+
+
+
